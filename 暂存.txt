@@ -1,0 +1,23 @@
+ console.log(req.body);
+    var data = JSON.stringify(req.body);
+    data = JSON.parse(data);
+    var username = data.username;
+    var password = data.password; 
+    console.log(username);
+    console.log(password);
+    var sql = `select password from manger where username = "${username}"`;
+    con.query(sql,function(err,result){
+        if(err) {
+            return res.sendStatus(400);
+        }
+        var dataString = JSON.stringify(result);
+        var data = JSON.parse(dataString);
+        var temp = Object.values(password).toString();
+        if(temp!=password){
+            console.log("密码错误");
+            res.send(null,400,err);
+        }else{
+            console.log("登录成功");
+            res.send(result,200,"获取管理员列表成功");
+        }
+    });
